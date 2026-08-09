@@ -15,12 +15,20 @@ public class MyDbContext:DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+
         modelBuilder.Entity<Area>()
             .HasMany(s => s.Shelters)
             .WithOne(s => s.Area)
             .HasForeignKey(s => s.AreaId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Area>()
+            .HasIndex(a => a.AreaCode)
+            .IsUnique(); 
+
+            
 
         modelBuilder.Entity<Shelter>()
             .HasMany(i => i.Inspections)
@@ -28,5 +36,9 @@ public class MyDbContext:DbContext
             .HasForeignKey(i => i.ShelterId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Inspection>()
+            .Property(i => i.Passed)
+            .HasComputedColumnSql("ReadinessScore >= 70");
     }
 }
