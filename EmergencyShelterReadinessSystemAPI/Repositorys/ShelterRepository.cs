@@ -1,10 +1,12 @@
 ﻿using EmergencyShelterReadinessSystemAPI.Data;
 using EmergencyShelterReadinessSystemAPI.DTOs;
+using EmergencyShelterReadinessSystemAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EmergencyShelterReadinessSystemAPI.Repositorys;
 
-public class ShelterRepository:IShelterRepository
+public class ShelterRepository : IShelterRepository
 {
     MyDbContext _dbContext;
 
@@ -14,7 +16,7 @@ public class ShelterRepository:IShelterRepository
     }
     public async Task<IEnumerable<ShelterWithAreaDto>> GetShelterWithAreaAsynk()
     {
-        var data =  _dbContext.Shelters
+        var data = _dbContext.Shelters
         .Select(s => new ShelterWithAreaDto
         {
             ShelterId = s.Id,
@@ -69,8 +71,48 @@ public class ShelterRepository:IShelterRepository
             })
             .ToListAsync();
     }
-    
 
+    public async Task<IEnumerable<ShelterSortedDto>> GetSorted(string sortBy = "name",
+    bool ascending = true)
+
+    {
+        IQueryable<Shelter> query = _dbContext.Shelters
+            .Include(s => s.Area);
+
+       
+
+        if (sortBy == "capacity")
+        {
+            query = ascending ?
+                 query.OrderBy(s => s.Capacity)
+                : query.OrderByDescending(s => s.Capacity);
+        }
+        else if (sortBy == "city")
+        {
+            query = ascending
+                ? query.OrderBy(s => s.Area.City)
+                : query.OrderByDescending(s => s.Area.City);
+        }
+        else
+        {
+            query = ascending
+                ? query.OrderBy(s => s.Name)
+                : query.OrderByDescending(s => s.Name);
+        }
+
+        return await query
+            .Select(s => new ShelterSortedDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Street = s.Street,
+                Capacity = s.Capacity,
+                IsAccessible = s.IsAccessible,
+                City = s.Area.City
+            })
+            .ToListAsync();
+    }
 
 }
+
 

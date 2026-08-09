@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IShelterRepository, ShelterRepository>();
+builder.Services.AddScoped<IInspectionRepository, InspectionRepository>();
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")

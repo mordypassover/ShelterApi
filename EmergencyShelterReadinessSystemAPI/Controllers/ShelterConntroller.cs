@@ -15,7 +15,7 @@ public class ShelterConntroller: ControllerBase
         _repository = repository;
     }
 
-    [HttpGet("With-area")]
+    [HttpGet("With-area/")]
     public async Task<ActionResult<IEnumerable<ShelterWithAreaDto>>> GetShelterWithAreaAsynk()
     {
         return Ok(await _repository.GetShelterWithAreaAsynk());
@@ -27,5 +27,12 @@ public class ShelterConntroller: ControllerBase
         bool? isPublic)
     {
         return Ok(await _repository.GetFilteredShelters(city, minCapacity, isAccessible, isPublic));
+    }
+
+    [HttpGet("sort/")]
+    public async Task<ActionResult<IEnumerable<ShelterSearchResultDto>>> SortAsynk(string sortBy = "name",
+    bool ascending = true)
+    {
+        return Ok(await _repository.GetSorted(sortBy, ascending));
     }
 }

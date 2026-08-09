@@ -10,5 +10,6 @@ public interface IShelterRepository
          int? minCapacity,
          bool? isAccessible,
          bool? isPublic);
-
+    Task<IEnumerable<ShelterSortedDto>> GetSorted(string sortBy = "name",
+    bool ascending = true);
 }
