@@ -5,6 +5,8 @@ namespace EmergencyShelterReadinessSystemAPI.Models;
 public class Inspection
 {
     public int Id {  get; set; }
+
+    public int ShelterId { get; set; }
     [Required]
     public DateTime InspectionDate { get; set; }
 
