@@ -35,4 +35,15 @@ public class ShelterConntroller: ControllerBase
     {
         return Ok(await _repository.GetSorted(sortBy, ascending));
     }
+
+    [HttpGet("with-inspection-count/")]
+    public async Task<ActionResult<IEnumerable<ShelterWithInspectionCountDto>>> GetSheltersWithReportCountAsynk()
+    {
+        return Ok(await _repository.GetSheltersWithReportCount());
+    }
+    [HttpGet("paged/")]
+    public async Task<ActionResult<PagedResultDto>> PagedAsync(int page, int pageSize)
+    {
+        return Ok(await _repository.PagedsAsync(page, pageSize));
+    }
 }

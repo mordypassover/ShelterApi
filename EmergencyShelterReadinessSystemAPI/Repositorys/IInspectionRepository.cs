@@ -5,5 +5,6 @@ namespace EmergencyShelterReadinessSystemAPI.Repositorys
     public interface IInspectionRepository
     {
         Task<IEnumerable<InspectionDetailedDto>> GetInspectionDetailedAsynk();
+        Task<IEnumerable<FailedInspectionDto>> FailedInspectionsAsynk();
     }
 }

@@ -12,4 +12,7 @@ public interface IShelterRepository
          bool? isPublic);
     Task<IEnumerable<ShelterSortedDto>> GetSorted(string sortBy = "name",
     bool ascending = true);
+
+    Task<IEnumerable<ShelterWithInspectionCountDto>> GetSheltersWithReportCount();
+    Task<PagedResultDto> PagedsAsync(int page, int pageSize);
 }

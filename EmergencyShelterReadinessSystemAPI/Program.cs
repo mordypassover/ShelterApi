@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IShelterRepository, ShelterRepository>();
 builder.Services.AddScoped<IInspectionRepository, InspectionRepository>();
+builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")

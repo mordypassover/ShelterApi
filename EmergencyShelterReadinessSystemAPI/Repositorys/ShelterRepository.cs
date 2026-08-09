@@ -112,7 +112,45 @@ public class ShelterRepository : IShelterRepository
             })
             .ToListAsync();
     }
+    public async Task<IEnumerable<ShelterWithInspectionCountDto>> GetSheltersWithReportCount()
+    {
+
+        var data = _dbContext.Shelters
+            .Select(s => new ShelterWithInspectionCountDto
+            {
+                ShelterId = s.Id,
+                ShelterName = s.Name,
+                InspectionCount = s.Inspections.Count
+            });
+        return await data.ToListAsync();
+    }
+    public async Task<PagedResultDto> PagedsAsync(int page, int pageSize)
+    {
+        var query = _dbContext.Shelters
+        .OrderBy(s => s.Name);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(s => new 
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Capacity = s.Capacity
+            })
+            .ToListAsync();
+
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+        return new PagedResultDto
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page=page,
+            PageSize = pageSize,
+            TotalPages = totalPages
+        };
+    }
 
 }
-
-

@@ -1,6 +1,6 @@
-﻿namespace EmergencyShelterReadinessSystemAPI.DTOs
+﻿namespace EmergencyShelterReadinessSystemAPI.DTOs;
+
+public class ShelterLatestInspectionDto
 {
-    public class ShelterLatestInspectionDto
-    {
-    }
+   
 }

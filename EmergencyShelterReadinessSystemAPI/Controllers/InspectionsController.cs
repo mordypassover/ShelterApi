@@ -13,10 +13,19 @@ namespace EmergencyShelterReadinessSystemAPI.Controllers
         {
             _repository = repository;
         }
-        [HttpGet("ditaled")]
+
+        [HttpGet("ditaled/")]
         public async Task<ActionResult<IEnumerable<InspectionDetailedDto>>> GetInspectionAsynk()
         {
             return Ok(await _repository.GetInspectionDetailedAsynk());
         }
+
+        [HttpGet("failed/")]
+        public async Task<ActionResult<IEnumerable<FailedInspectionDto>>> FailedInspectionsAsynk()
+        {
+            return Ok(await _repository.FailedInspectionsAsynk());
+        }
+
     }
+
 }
