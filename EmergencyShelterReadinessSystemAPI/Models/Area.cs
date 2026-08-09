@@ -23,7 +23,6 @@ public class Area
     [Range(1,5)]
     public int RiskLevel { get; set; }
 
-    public List<Shelter> Shelters { get; set; }
-
+    public List<Shelter> Shelters { get; set; } = new List<Shelter>();
 
 }

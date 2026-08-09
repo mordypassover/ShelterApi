@@ -11,7 +11,12 @@ public class Inspection
     [Range(0,100)]
     public int ReadinessScore { get; set; }
     public bool Passed { get; set; }
+
+    [Range(0,100)]
     public int DefectsCountv { get; set; }
 
+    [MaxLength(500)]
+    public string Notes {  get; set; }
 
+    public Shelter Shelter { get; set; } = null!;
 }

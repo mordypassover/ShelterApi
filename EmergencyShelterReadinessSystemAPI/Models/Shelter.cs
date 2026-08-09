@@ -5,24 +5,24 @@ namespace EmergencyShelterReadinessSystemAPI.Models;
 
 public class Shelter
 {
-    public int Id {  get; set; }
+    public int Id { get; set; }
 
     public int AreaId { get; set; }
 
     [Required]
     [MaxLength(200)]
-    public string Name {  get; set; }
+    public string Name { get; set; }
 
     [Required]
-    [MaxLength (100)]
-    public string Street {  get; set; }
+    [MaxLength(100)]
+    public string Street { get; set; }
 
     [Required]
     [MaxLength(20)]
-    public int BuildingNumber {  get; set; }
+    public int BuildingNumber { get; set; }
 
     [Required]
-    [Range(1,10000)]
+    [Range(1, 10000)]
     public int Capacity { get; set; }
 
     [Required]
@@ -35,6 +35,8 @@ public class Shelter
     [RegularExpression("^PublicBuilding|School|Parking|Residential|Commercial$")]
     public string ShelterType { get; set; }
 
-    public Area Area { get; set; }
+    public Area Area { get; set; } = null!;
+
+    public List<Inspection> Inspections { get; set; } = new List<Inspection>();
 
 }
