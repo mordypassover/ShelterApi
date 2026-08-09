@@ -15,7 +15,7 @@ public class Inspection
     public bool Passed { get; set; }
 
     [Range(0,100)]
-    public int DefectsCountv { get; set; }
+    public int DefectsCount { get; set; }
 
     [MaxLength(500)]
     public string Notes {  get; set; }
