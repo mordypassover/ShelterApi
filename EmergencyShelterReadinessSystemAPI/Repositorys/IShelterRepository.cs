@@ -14,5 +14,8 @@ public interface IShelterRepository
     bool ascending = true);
 
     Task<IEnumerable<ShelterWithInspectionCountDto>> GetSheltersWithReportCount();
+    Task<IEnumerable<ShelterTypeAverageDto>> ShelterTypeAverage();
     Task<PagedResultDto> PagedsAsync(int page, int pageSize);
+    Task<IEnumerable<ShelterLatestInspectionDto>> SheltersLastInspection();
+
 }

@@ -79,7 +79,7 @@ public class ShelterRepository : IShelterRepository
         IQueryable<Shelter> query = _dbContext.Shelters
             .Include(s => s.Area);
 
-       
+
 
         if (sortBy == "capacity")
         {
@@ -124,6 +124,21 @@ public class ShelterRepository : IShelterRepository
             });
         return await data.ToListAsync();
     }
+
+    public async Task<IEnumerable<ShelterTypeAverageDto>> ShelterTypeAverage()
+    {
+        var data = _dbContext.Inspections
+            .GroupBy(i => i.Shelter.ShelterType)
+            .Select(g => new ShelterTypeAverageDto
+            {
+                ShelterType = g.Key.ToString(),
+                AverageReadinessScore = g.Average(i => i.ReadinessScore),
+                TotalInspections = g.Count()
+            });
+        return await data.ToListAsync();
+    }
+
+
     public async Task<PagedResultDto> PagedsAsync(int page, int pageSize)
     {
         var query = _dbContext.Shelters
@@ -134,7 +149,7 @@ public class ShelterRepository : IShelterRepository
         var items = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(s => new 
+            .Select(s => new
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -147,10 +162,38 @@ public class ShelterRepository : IShelterRepository
         {
             Items = items,
             TotalCount = totalCount,
-            Page=page,
+            Page = page,
             PageSize = pageSize,
             TotalPages = totalPages
         };
     }
 
+
+    public async Task<IEnumerable<ShelterLatestInspectionDto>> SheltersLastInspection()
+    {
+        var data = _dbContext.Shelters
+            .GroupJoin(
+                _dbContext.Inspections,
+                shelter => shelter.Id,
+                inspection => inspection.ShelterId,
+                (shelter, shelterInspections) => new { shelter, shelterInspections }
+            )
+            .Select(x => new ShelterLatestInspectionDto
+            {
+                ShelterId = x.shelter.Id,
+                ShelterName = x.shelter.Name,
+
+                LatestInspectionDate = x.shelterInspections
+                    .OrderByDescending(i => i.InspectionDate)
+                    .Select(i => (DateTime?)i.InspectionDate)
+                    .FirstOrDefault(),
+
+                LatestReadinessScore = x.shelterInspections
+                    .OrderByDescending(i => i.InspectionDate)
+                    .Select(i => (int?)i.ReadinessScore)
+                    .FirstOrDefault()
+            });
+
+        return await data.ToListAsync();
+    }
 }

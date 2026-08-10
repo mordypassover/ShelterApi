@@ -41,9 +41,22 @@ public class ShelterConntroller: ControllerBase
     {
         return Ok(await _repository.GetSheltersWithReportCount());
     }
+    [HttpGet("Type-Average/")]
+    public async Task<ActionResult<IEnumerable<ShelterTypeAverageDto>>> ShelterTypeAverage()
+    {
+        return Ok(await _repository.ShelterTypeAverage());
+    }
+
     [HttpGet("paged/")]
     public async Task<ActionResult<PagedResultDto>> PagedAsync(int page, int pageSize)
     {
         return Ok(await _repository.PagedsAsync(page, pageSize));
+
+
+    }
+    [HttpGet("Last-inspection/")]
+    public async Task<ActionResult<IEnumerable<ShelterLatestInspectionDto>>> SheltersLastInspection()
+    {
+        return Ok(await _repository.SheltersLastInspection());
     }
 }
